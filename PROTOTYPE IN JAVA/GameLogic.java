@@ -53,8 +53,6 @@ public class GameLogic {
         }
     }
 
-    private void moveRight() {
-    }
 
     private void moveUp() {
         gravityUp();
