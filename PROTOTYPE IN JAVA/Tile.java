@@ -46,7 +46,7 @@ public class Tile {
             case 2048:
                 return new Color(237, 194, 46);
             default:
-                return new Color(131, 125, 125, 226); // Default tile color
+                return new Color(150, 150, 150); // Default tile color
         }
     }
 }
