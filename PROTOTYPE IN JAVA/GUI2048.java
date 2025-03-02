@@ -63,6 +63,9 @@ public class GUI2048 extends JFrame implements KeyListener {
 
         addKeyListener(this);
 
+        setFocusable(true);
+        requestFocusInWindow();
+
         startGame();
     }
     private void startGame(){
