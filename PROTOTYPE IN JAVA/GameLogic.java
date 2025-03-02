@@ -6,7 +6,6 @@ public class GameLogic {
 
     public GameLogic(){
         setGame();
-
     }
 
     private void setGame() {
