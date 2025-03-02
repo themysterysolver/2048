@@ -156,7 +156,37 @@ public class GameLogic {
     }
 
     private void moveLeft() {
-
+        gravityLeft();
+        mergeLeft();
+        gravityLeft();
+    }
+    public void gravityLeft(){
+        for(int i=0;i<4;i++){
+            ArrayList<Integer> theRow=new ArrayList<>();
+            for(int j=0;j<4;j++){
+                if(!board[i][j].is_empty()){
+                    theRow.add(board[i][j].getValue());
+                }
+            }
+            for(int j=0;j<4;j++){
+                if(!theRow.isEmpty()){
+                    board[i][j].setValue(theRow.removeFirst());
+                }
+                else{
+                    board[i][j].setValue(0);
+                }
+            }
+        }
+    }
+    public void mergeLeft(){
+        for(int i=0;i<4;i++){
+            for(int j=0;j<3;j++){
+                if(board[i][j].getValue()==board[i][j+1].getValue()){
+                    board[i][j].setValue(board[i][j].getValue()*2);
+                    board[i][j+1].setValue(0);
+                }
+            }
+        }
     }
 
     private boolean inGamePlay() {
