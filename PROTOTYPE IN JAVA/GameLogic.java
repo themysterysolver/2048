@@ -17,7 +17,7 @@ public class GameLogic {
         }
         generateTile();
         generateTile();
-        display();
+        //display();
     }
 
     public void generateTile() {
@@ -188,7 +188,7 @@ public class GameLogic {
         }
     }
 
-    private boolean inGamePlay() {
+    public boolean inGamePlay() {
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 if(board[i][j].is_empty()){

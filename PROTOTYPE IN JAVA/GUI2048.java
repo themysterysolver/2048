@@ -1,13 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class GUI2048 extends JFrame implements KeyListener {
     GameLogic game;
-    JPanel boardPanel;
+    JPanel boardPanel,top;
     JLabel[][] tiles;
     JLabel message;
+    JButton button;
+
     public GUI2048() {
         game=new GameLogic();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -17,8 +21,29 @@ public class GUI2048 extends JFrame implements KeyListener {
         setSize(500,500);
         setLocationRelativeTo(null);
 
+        top=new JPanel(new GridLayout(1,2));
         message=new JLabel("2048");
-        add(message,BorderLayout.NORTH);
+        top.add(message);
+
+        JPanel left=new JPanel();
+        left.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        button=new JButton("RESTART");
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GUI2048();
+                dispose();
+            }
+        });
+
+        left.add(button);
+        top.add(left);
+
+        add(top,BorderLayout.NORTH);
 
         boardPanel=new JPanel(new GridLayout(4,4,4,4));
         tiles=new JLabel[4][4];
@@ -82,7 +107,35 @@ public class GUI2048 extends JFrame implements KeyListener {
                 game.generateTile();
             }
             displayBoard();
+            if(winner()){
+                message.setText("You have won 2048✨!");
+                JOptionPane.showMessageDialog(this,"<html><div " +
+                        "style='text-align:center;" +
+                        "font-size:16px; color:#6A1B9A;'><b>CONGRATULATIONS!</b><br></div>🎉" +
+                        "You have won the game!🏆</html>");
+                removeKeyListener(this);
+            }
+            if(!game.inGamePlay()){
+                //System.out.println("CHECKPOINT:You have lost!!");
+                message.setText("You have Lost!!");
+                JOptionPane.showMessageDialog(this,"<html><div " +
+                        "style='text-align:center;" +
+                        "font-size:16px; color:#6A1B9A;'><b>Train harder!</b><br></div>" +
+                        "</html>");
+                removeKeyListener(this);
+            }
         }
+    }
+
+    private boolean winner() {
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if(game.board[i][j].getValue()==2048){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean boardsAreEqual(Tile[][] copy, Tile[][] board) {
