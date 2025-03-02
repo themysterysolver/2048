@@ -18,6 +18,7 @@ public class GameLogic {
         }
         generateTile();
         generateTile();
+        display();
     }
 
     private void generateTile() {
@@ -56,14 +57,13 @@ public class GameLogic {
     }
 
     private void moveUp() {
+        gravityUp();
+        mergeUp();
+        gravityUp();
     }
 
-    private void moveDown() {
-        gravityDown();
-        gravityDown();
-    }
-    public  void gravityDown(){
-        for(int j=3;j>-1;j--){
+    public void gravityUp(){
+        for(int j=0;j<4;j++){
             ArrayList<Integer> theRow=new ArrayList<>();
             for(int i=0;i<4;i++){
                 if(!board[i][j].is_empty()){
@@ -73,6 +73,52 @@ public class GameLogic {
             for(int i=0;i<4;i++){
                 if(!theRow.isEmpty()){
                     board[i][j].setValue(theRow.removeFirst());
+                }
+                else{
+                    board[i][j].setValue(0);
+                }
+            }
+        }
+    }
+    public void mergeUp(){
+        for(int j=0;j<4;j++){
+            for(int i=0;i<3;i++){
+                if(board[i][j].getValue()==board[i+1][j].getValue()){
+                    board[i][j].setValue(board[i][j].getValue()*2);
+                    board[i+1][j].setValue(0);
+                }
+            }
+        }
+    }
+    private void moveDown() {
+        gravityDown();
+        mergeDown();
+        gravityDown();
+    }
+    public  void gravityDown(){
+        for(int j=0;j<4;j++){ //starting from BOTTOM CELL(column is mainly changed)
+            ArrayList<Integer> theRow=new ArrayList<>();
+            for(int i=3;i>-1;i--){//row is mainly changed!
+                if(!board[i][j].is_empty()){
+                    theRow.add(board[i][j].getValue());
+                }
+            }
+            for(int i=3;i>-1;i--){
+                if(!theRow.isEmpty()){
+                    board[i][j].setValue(theRow.removeFirst());
+                }
+                else{
+                    board[i][j].setValue(0);
+                }
+            }
+        }
+    }
+    public void mergeDown(){
+        for(int j=0;j<4;j++){
+            for(int i=3;i>0;i--){
+                if(board[i][j].getValue()==board[i-1][j].getValue()){
+                    board[i][j].setValue(board[i][j].getValue()*2);
+                    board[i-1][j].setValue(0);
                 }
             }
         }
