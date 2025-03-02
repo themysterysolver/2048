@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class GUI2048 extends JFrame {
+public class GUI2048 extends JFrame implements KeyListener {
     GameLogic game;
     JPanel boardPanel;
     JLabel[][] tiles;
@@ -34,10 +36,11 @@ public class GUI2048 extends JFrame {
 
         setVisible(true);
 
+        addKeyListener(this);
+
         startGame();
     }
     private void startGame(){
-        game.startGame();
         displayBoard();
     }
 
@@ -49,8 +52,58 @@ public class GUI2048 extends JFrame {
                 tiles[i][j].setHorizontalAlignment(SwingConstants.CENTER);
                 tiles[i][j].setFont(new Font("Arial",Font.BOLD,30));
                 tiles[i][j].setBackground(game.board[i][j].getColor(val));
+
+                tiles[i][j].revalidate();
+                tiles[i][j].repaint();
             }
         }
 
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //System.out.println(e.getKeyChar()+" "+e.getKeyCode());
+        Tile[][] copy=copyBoard();
+        int key=e.getKeyCode();
+        if(key==KeyEvent.VK_UP || key==KeyEvent.VK_DOWN || key==KeyEvent.VK_LEFT || key==KeyEvent.VK_RIGHT ) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_UP -> game.moveUp();
+                case KeyEvent.VK_DOWN -> game.moveDown();
+                case KeyEvent.VK_LEFT -> game.moveLeft();
+                case KeyEvent.VK_RIGHT -> game.moveRight();
+                default -> System.out.println();
+            }
+            if(!boardsAreEqual(copy,game.board)){
+                game.generateTile();
+            }
+            displayBoard();
+        }
+    }
+
+    private boolean boardsAreEqual(Tile[][] copy, Tile[][] board) {
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if(copy[i][j].getValue()!=board[i][j].getValue()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private Tile[][] copyBoard() {
+        Tile[][] copy=new Tile[4][4];
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                copy[i][j]=new Tile(game.board[i][j].getValue());
+            }
+        }
+        return copy;
+    }
+
 }

@@ -20,7 +20,7 @@ public class GameLogic {
         display();
     }
 
-    private void generateTile() {
+    public void generateTile() {
         List<int[]> positions=new ArrayList<>();
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
@@ -52,7 +52,7 @@ public class GameLogic {
         }
     }
 
-    private void moveRight() {
+    public void moveRight() {
         gravityRight();
         mergeRight();
         gravityRight();
@@ -86,7 +86,7 @@ public class GameLogic {
         }
     }
 
-    private void moveUp() {
+    public void moveUp() {
         gravityUp();
         mergeUp();
         gravityUp();
@@ -120,7 +120,7 @@ public class GameLogic {
             }
         }
     }
-    private void moveDown() {
+    public void moveDown() {
         gravityDown();
         mergeDown();
         gravityDown();
@@ -154,7 +154,7 @@ public class GameLogic {
         }
     }
 
-    private void moveLeft() {
+    public void moveLeft() {
         gravityLeft();
         mergeLeft();
         gravityLeft();
